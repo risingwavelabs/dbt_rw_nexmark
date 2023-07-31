@@ -1,0 +1,1 @@
+SELECT auction, bidder, price, date_time, TO_CHAR(date_time, 'YYYY-MM-DD') as date, TO_CHAR(date_time, 'HH:MI') as time FROM {{ ref('bid') }}

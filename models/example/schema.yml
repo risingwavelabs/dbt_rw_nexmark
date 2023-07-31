@@ -1,0 +1,11 @@
+
+version: 2
+
+models:
+  - name: q1
+    description: "nexmark q1"
+    columns:
+      - name: bidder
+        description: "bidder"
+        tests:
+          - not_null
