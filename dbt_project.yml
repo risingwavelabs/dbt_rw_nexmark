@@ -34,7 +34,17 @@ models:
   dbt_rw_nexmark:
     # Config indicated by + and applies to all files under models/example/
     example:
-      +materialized: view
+      source:
+        +materialized: source
+      table:
+        +materialized: table
+      table_with_connector:
+        +materialized: table_with_connector
+      view:
+        +materialized: view
+      sink:
+        +materialized: sink  
       nexmark_query:
         +materialized: materializedview
+
         

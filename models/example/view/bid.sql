@@ -5,5 +5,5 @@ SELECT (bid).auction,
        (bid).url,
        (bid).extra,
        date_time
-FROM nexmark
+FROM {{ ref('nexmark') }}
 WHERE event_type = 2
