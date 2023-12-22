@@ -1,5 +1,5 @@
 {{ config(materialized='table_with_connector') }}
-CREATE TABLE t_with_conn (
+CREATE TABLE IF NOT EXISTS t_with_conn (
   event_type BIGINT,
   person STRUCT<"id" BIGINT,
                 "name" VARCHAR,

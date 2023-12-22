@@ -1,5 +1,5 @@
 {{ config(materialized='source') }}
-CREATE SOURCE nexmark (
+CREATE SOURCE IF NOT EXISTS nexmark (
   event_type BIGINT,
   person STRUCT<"id" BIGINT,
                 "name" VARCHAR,
