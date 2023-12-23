@@ -2,10 +2,25 @@
 version: 2
 
 models:
-  - name: q1
-    description: "nexmark q1"
+  - name: t
+    config:
+      contract:
+        enforced: true
     columns:
+      - name: c1
+        data_type: int
+      - name: c2
+        data_type: int
+  - name: q1
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: auction
+        data_type: bigint
       - name: bidder
-        description: "bidder"
-        tests:
-          - not_null
+        data_type: bigint
+      - name: date_time
+        data_type: timestamp without time zone
+      - name: price
+        data_type: decimal
