@@ -45,6 +45,6 @@ models:
       sink:
         +materialized: sink  
       nexmark_query:
-        +materialized: materializedview
+        +materialized: materialized_view
 
         
