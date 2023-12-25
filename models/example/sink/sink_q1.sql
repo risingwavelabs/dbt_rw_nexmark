@@ -1,5 +1,5 @@
 {{ config(materialized='sink') }}
-CREATE SINK IF NOT EXISTS sink_q1 from {{ ref('q1') }} 
+CREATE SINK IF NOT EXISTS  {{ this }} from {{ ref('q1') }} 
 WITH (
     connector = 'blackhole'
 )
