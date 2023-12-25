@@ -6,5 +6,5 @@ SELECT (person).id,
        (person).state,
        (person).extra,
        date_time
-FROM nexmark
+FROM {{ ref('nexmark') }}
 WHERE event_type = 0

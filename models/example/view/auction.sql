@@ -8,5 +8,5 @@ SELECT (auction).id,
        (auction).category,
        (auction).extra,
        date_time
-FROM nexmark
+FROM {{ ref('nexmark') }}
 WHERE event_type = 1
