@@ -4,50 +4,18 @@ Use dbt to manage nexmark queries in RisingWave!
 
 This is a self-contained playground dbt project for RisingWave and we assume you have already depolyed RisingWave successfully in your environment.
 
-### Create source in RisingWave
+### Models structure
 
-To get started, you need to use `psql` to connect to your RisingWave instance and run the following sql to create a nexmark source in RisingWave before using dbt. `Source` is a fundamental concept in RisingWave to represent the source of the data. Here we view `Source` as your raw data.
-
-```sql
-CREATE SOURCE nexmark (
-  event_type BIGINT,
-  person STRUCT<"id" BIGINT,
-                "name" VARCHAR,
-                "email_address" VARCHAR,
-                "credit_card" VARCHAR,
-                "city" VARCHAR,
-                "state" VARCHAR,
-                "date_time" TIMESTAMP,
-                "extra" VARCHAR>,
-  auction STRUCT<"id" BIGINT,
-                 "item_name" VARCHAR,
-                 "description" VARCHAR,
-                 "initial_bid" BIGINT,
-                 "reserve" BIGINT,
-                 "date_time" TIMESTAMP,
-                 "expires" TIMESTAMP,
-                 "seller" BIGINT,
-                 "category" BIGINT,
-                 "extra" VARCHAR>,
-  bid STRUCT<"auction" BIGINT,
-             "bidder" BIGINT,
-             "price" BIGINT,
-             "channel" VARCHAR,
-             "url" VARCHAR,
-             "date_time" TIMESTAMP,
-             "extra" VARCHAR>,
-  date_time TIMESTAMP AS
-    CASE
-        WHEN event_type = 0 THEN (person).date_time
-        WHEN event_type = 1 THEN (auction).date_time
-        ELSE (bid).date_time
-    END,
-  WATERMARK FOR date_time AS date_time - INTERVAL '4' SECOND
-) WITH (
-    connector = 'nexmark',
-    nexmark.split.num = '2',
-    nexmark.min.event.gap.in.ns = '10000000'
-);
+```
+models
+└── example
+    ├── dbt_packages
+    ├── nexmark_query (define materialized_views, which is an alternative of the incremental model in risingwave)
+    ├── sink (define sinks in risingwave dbt)
+    ├── source (define sources in risingwave dbt)
+    ├── table(define tables with indexes in risingwave dbt)
+    ├── table_with_connector (define a table with connector in risingwave dbt)
+    └── view (define views in risingwave dbt)
 ```
 
 ### Run dbt
