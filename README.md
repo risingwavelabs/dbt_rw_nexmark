@@ -2,20 +2,31 @@ Use dbt to manage nexmark queries in RisingWave!
 
 ### What is this repo
 
-This is a self-contained playground dbt project for RisingWave and we assume you have already depolyed RisingWave successfully in your environment.
+This is a self-contained playground dbt project for RisingWave featuring comprehensive examples of:
+
+- **Nexmark benchmark queries** as materialized views
+- **Zero downtime rebuilds** for production deployments  
+- **Wide table patterns** with tagged examples
+- **Incremental models** for streaming data processing
+- **Various materializations**: tables, views, sinks, and sources
+- **CI/CD integration** with automated testing
+
+We assume you have already deployed RisingWave successfully in your environment.
 
 ### Models structure
 
 ```
 models
 └── example
-    ├── dbt_packages
-    ├── nexmark_query (define materialized_views, which is an alternative of the incremental model in risingwave)
-    ├── sink (define sinks in risingwave dbt)
-    ├── source (define sources in risingwave dbt)
-    ├── table(define tables with indexes in risingwave dbt)
-    ├── table_with_connector (define a table with connector in risingwave dbt)
-    └── view (define views in risingwave dbt)
+    ├── incremental (incremental models for streaming data)
+    ├── nexmark_query (materialized views for benchmark queries)
+    ├── sink (sinks for data export)
+    ├── source (source definitions)
+    ├── table (tables with indexes)
+    ├── table_with_connector (tables with external connectors)
+    ├── view (standard views)
+    ├── wide_table (wide table example with tags)
+    └── zero_downtime (zero downtime rebuild examples)
 ```
 
 ### Run dbt
@@ -78,6 +89,17 @@ $ dbt docs generate
 $ dbt docs serve
 ```
 
+### Running specific examples
+
+Run wide table examples:
+```bash
+$ dbt run --select tag:wide_table_example
+```
+
+Run zero downtime examples:
+```bash
+$ dbt run --select +tag:zero_downtime_example --vars 'zero_downtime: true'
+```
 
 ### Resources:
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
