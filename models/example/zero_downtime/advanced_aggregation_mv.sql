@@ -2,8 +2,8 @@
     materialized='materialized_view',
     zero_downtime={'enabled': true},
     indexes=[
-        {'columns': ['auction_id'], 'type': 'btree'},
-        {'columns': ['total_bids'], 'type': 'btree'}
+        {'columns': ['auction_id']},
+        {'columns': ['total_bids']}
     ],
     tags=['zero_downtime_example']
 ) }}
