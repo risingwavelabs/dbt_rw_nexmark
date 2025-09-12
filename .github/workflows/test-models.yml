@@ -1,0 +1,54 @@
+name: Test Models
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-models:
+    runs-on: ubuntu-latest
+    
+    services:
+      risingwave:
+        image: ghcr.io/risingwavelabs/risingwave:latest
+        ports:
+          - 4566:4566
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install dbt-risingwave
+          mkdir -p ~/.dbt
+
+      - name: Setup dbt profile
+        run: |
+          cat > ~/.dbt/profiles.yml << EOF
+          dbt_rw_nexmark:
+            target: dev
+            outputs:
+              dev:
+                type: risingwave
+                host: 127.0.0.1
+                port: 4566
+                user: root
+                password: ''
+                database: dev
+                schema: public
+          EOF
+
+      - name: Wait for RisingWave
+        run: sleep 30
+
+      - name: Run models
+        run: |
+          dbt deps
+          dbt seed
+          dbt run

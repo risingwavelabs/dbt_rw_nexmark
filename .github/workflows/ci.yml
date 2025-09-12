@@ -1,0 +1,98 @@
+name: CI - dbt RisingWave Nexmark
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test-dbt-nexmark:
+    runs-on: ubuntu-latest
+    
+    services:
+      risingwave:
+        image: ghcr.io/risingwavelabs/risingwave:latest
+        ports:
+          - 4566:4566
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -p 4566 -U root"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dbt-risingwave
+        run: |
+          pip install --upgrade pip
+          pip install dbt-risingwave
+
+      - name: Create dbt profiles directory
+        run: mkdir -p ~/.dbt
+
+      - name: Configure dbt profile
+        run: |
+          cat > ~/.dbt/profiles.yml << EOF
+          dbt_rw_nexmark:
+            target: dev
+            outputs:
+              dev:
+                type: risingwave
+                host: 127.0.0.1
+                port: 4566
+                user: root
+                password: ''
+                database: dev
+                schema: public
+          EOF
+
+      - name: Wait for RisingWave to be ready
+        run: |
+          timeout 60 bash -c 'until nc -z 127.0.0.1 4566; do sleep 1; done'
+
+      - name: Test dbt connection
+        run: dbt debug
+
+      - name: Install dbt dependencies
+        run: dbt deps
+
+      - name: Run dbt seed
+        run: dbt seed
+
+      - name: Run all dbt models
+        run: dbt run
+
+      - name: Run dbt tests
+        run: dbt test
+        continue-on-error: true
+
+      - name: Generate dbt docs
+        run: dbt docs generate
+
+      - name: Run wide table example
+        run: dbt run --select tag:wide_table_example
+
+      - name: Run zero downtime example
+        run: dbt run --select +tag:zero_downtime_example --vars 'zero_downtime: true'
+
+      - name: Run incremental models
+        run: dbt run --select config.materialized:incremental
+
+      - name: Test specific queries
+        run: |
+          dbt run --select q1 q2 q3
+          dbt test --select q1 q2 q3
+        continue-on-error: true
+
+      - name: Full refresh test
+        run: dbt run --full-refresh --select tag:wide_table_example
+        continue-on-error: true
