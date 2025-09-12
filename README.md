@@ -5,6 +5,7 @@ Use dbt to manage nexmark queries in RisingWave!
 This is a self-contained playground dbt project for RisingWave featuring comprehensive examples of:
 
 - **Nexmark benchmark queries** as materialized views
+- **Background DDL** for supported async DDL paths in dbt-risingwave
 - **Zero downtime rebuilds** for production deployments  
 - **Wide table patterns** with tagged examples
 - **Incremental models** for streaming data processing
@@ -18,6 +19,7 @@ We assume you have already deployed RisingWave successfully in your environment.
 ```
 models
 └── example
+    ├── background_ddl (background DDL examples)
     ├── incremental (incremental models for streaming data)
     ├── nexmark_query (materialized views for benchmark queries)
     ├── sink (sinks for data export)
@@ -94,6 +96,11 @@ $ dbt docs serve
 Run wide table examples:
 ```bash
 $ dbt run --select tag:wide_table_example
+```
+
+Run background DDL examples:
+```bash
+$ dbt run --select +tag:background_ddl_example
 ```
 
 Run zero downtime examples:
