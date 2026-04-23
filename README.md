@@ -20,7 +20,7 @@ We assume you have already deployed RisingWave successfully in your environment.
 models
 └── example
     ├── background_ddl (background DDL examples)
-    ├── function (SQL scalar function example and validation)
+    ├── function (SQL scalar plus adapter-managed JavaScript scalar function examples)
     ├── incremental (incremental models for streaming data)
     ├── nexmark_query (materialized views for benchmark queries)
     ├── sink (sinks for data export)
@@ -104,9 +104,9 @@ Run background DDL examples:
 $ dbt run --select +tag:background_ddl_example
 ```
 
-Run the SQL scalar function example and its tests:
+Run the scalar function examples and their tests:
 ```bash
-$ dbt build --select +udf_price_example
+$ dbt build --select +udf_price_example +js_udf_price_example
 ```
 
 Run zero downtime examples:

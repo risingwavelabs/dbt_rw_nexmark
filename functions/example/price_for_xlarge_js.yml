@@ -1,0 +1,12 @@
+functions:
+  - name: price_for_xlarge_js
+    description: Double the input price with an embedded JavaScript UDF.
+    config:
+      language: javascript
+    arguments:
+      - name: price
+        data_type: float8
+        description: Base price.
+    returns:
+      data_type: float8
+      description: Doubled price.
