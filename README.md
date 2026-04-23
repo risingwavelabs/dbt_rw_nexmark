@@ -20,7 +20,7 @@ We assume you have already deployed RisingWave successfully in your environment.
 models
 └── example
     ├── background_ddl (background DDL examples)
-    ├── function (SQL scalar plus adapter-managed JavaScript scalar function examples)
+    ├── function (SQL scalar, JavaScript scalar, and external Python scalar function examples)
     ├── incremental (incremental models for streaming data)
     ├── nexmark_query (materialized views for benchmark queries)
     ├── sink (sinks for data export)
@@ -109,14 +109,20 @@ Start the local HTTP server used by the async JavaScript UDF examples:
 $ python3 scripts/js_udf_http_server.py
 ```
 
+Start the local external Python UDF server used by the Python function example:
+```bash
+$ python3 -m pip install -r scripts/python_udf_server_requirements.txt
+$ python3 scripts/python_udf_server.py
+```
+
 Run the scalar function examples and their tests:
 ```bash
 $ dbt build --select +udf_price_example +js_udf_price_example +py_udf_price_example +js_udf_http_get_example +js_udf_http_post_example
 ```
 
-The embedded Python example currently uses `functions/*.sql` plus:
+The external Python example currently uses `functions/*.sql` plus:
 - `config.language: python`
-- `config.runtime_version: embedded`
+- `config.link: http://127.0.0.1:8815`
 
 Run zero downtime examples:
 ```bash

@@ -1,5 +1,2 @@
-import math
-
-
-def price_for_xlarge_py(price):
-    return math.fsum([price, price])
+-- External Python UDF served by scripts/python_udf_server.py.
+-- The body is intentionally unused by dbt-risingwave for external UDFs.

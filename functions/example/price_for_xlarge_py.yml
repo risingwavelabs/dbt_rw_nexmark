@@ -1,9 +1,9 @@
 functions:
   - name: price_for_xlarge_py
-    description: Double the input price with an embedded Python UDF.
+    description: Double the input price with an external Python UDF server.
     config:
       language: python
-      runtime_version: embedded
+      link: http://127.0.0.1:8815
     arguments:
       - name: price
         data_type: float8
