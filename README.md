@@ -111,8 +111,12 @@ $ python3 scripts/js_udf_http_server.py
 
 Run the scalar function examples and their tests:
 ```bash
-$ dbt build --select +udf_price_example +js_udf_price_example +js_udf_http_get_example +js_udf_http_post_example
+$ dbt build --select +udf_price_example +js_udf_price_example +py_udf_price_example +js_udf_http_get_example +js_udf_http_post_example
 ```
+
+The embedded Python example currently uses `functions/*.sql` plus:
+- `config.language: python`
+- `config.runtime_version: embedded`
 
 Run zero downtime examples:
 ```bash

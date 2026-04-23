@@ -1,0 +1,13 @@
+functions:
+  - name: price_for_xlarge_py
+    description: Double the input price with an embedded Python UDF.
+    config:
+      language: python
+      runtime_version: embedded
+    arguments:
+      - name: price
+        data_type: float8
+        description: Base price.
+    returns:
+      data_type: float8
+      description: Doubled price.
