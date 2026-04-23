@@ -104,9 +104,14 @@ Run background DDL examples:
 $ dbt run --select +tag:background_ddl_example
 ```
 
+Start the local HTTP server used by the async JavaScript UDF examples:
+```bash
+$ python3 scripts/js_udf_http_server.py
+```
+
 Run the scalar function examples and their tests:
 ```bash
-$ dbt build --select +udf_price_example +js_udf_price_example
+$ dbt build --select +udf_price_example +js_udf_price_example +js_udf_http_get_example +js_udf_http_post_example
 ```
 
 Run zero downtime examples:

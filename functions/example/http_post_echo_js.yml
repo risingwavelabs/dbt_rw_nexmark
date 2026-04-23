@@ -1,0 +1,16 @@
+functions:
+  - name: http_post_echo_js
+    description: Send payloads over HTTP POST to a local mock service.
+    config:
+      language: javascript
+      async: true
+    arguments:
+      - name: prefix
+        data_type: varchar
+        description: Prefix.
+      - name: value
+        data_type: varchar
+        description: Payload value.
+    returns:
+      data_type: varchar
+      description: Combined response payload.
