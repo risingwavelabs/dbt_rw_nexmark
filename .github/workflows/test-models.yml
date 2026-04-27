@@ -15,6 +15,14 @@ jobs:
         image: ghcr.io/risingwavelabs/risingwave:latest
         ports:
           - 4566:4566
+        options: >-
+          --add-host=host.docker.internal:host-gateway
+
+    env:
+      JS_UDF_HTTP_BIND_HOST: 0.0.0.0
+      JS_UDF_HTTP_BASE_URL: http://host.docker.internal:18080
+      PY_UDF_SERVER_BIND_HOST: 0.0.0.0
+      PY_UDF_SERVER_URL: http://host.docker.internal:8815
 
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +34,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install dbt-risingwave
+          pip install -r scripts/python_udf_server_requirements.txt
           mkdir -p ~/.dbt
 
       - name: Setup dbt profile
@@ -47,8 +56,15 @@ jobs:
       - name: Wait for RisingWave
         run: sleep 30
 
+      - name: Start UDF mock servers
+        run: |
+          python scripts/js_udf_http_server.py > /tmp/js_udf_http_server.log 2>&1 &
+          python scripts/python_udf_server.py > /tmp/python_udf_server.log 2>&1 &
+          timeout 30 bash -c 'until nc -z 127.0.0.1 18080; do sleep 1; done'
+          timeout 30 bash -c 'until nc -z 127.0.0.1 8815; do sleep 1; done'
+
       - name: Run models
         run: |
           dbt deps
           dbt seed
-          dbt run
+          dbt build

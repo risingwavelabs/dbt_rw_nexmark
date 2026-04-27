@@ -1,0 +1,13 @@
+functions:
+  - name: http_get_todo_name_js
+    description: Fetch todo metadata over HTTP GET from a local mock service.
+    config:
+      language: javascript
+      async: true
+    arguments:
+      - name: id
+        data_type: int4
+        description: Todo identifier.
+    returns:
+      data_type: varchar
+      description: Todo name fetched over HTTP.

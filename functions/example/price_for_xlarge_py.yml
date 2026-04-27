@@ -1,0 +1,13 @@
+functions:
+  - name: price_for_xlarge_py
+    description: Double the input price with an external Python UDF server.
+    config:
+      language: python
+      link: "{{ env_var('PY_UDF_SERVER_URL', 'http://127.0.0.1:8815') }}"
+    arguments:
+      - name: price
+        data_type: float8
+        description: Base price.
+    returns:
+      data_type: float8
+      description: Doubled price.
