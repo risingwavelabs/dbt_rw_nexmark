@@ -21,6 +21,13 @@ python3 -m pip install -r scripts/python_udf_server_requirements.txt
 python3 scripts/python_udf_server.py
 ```
 
+The HTTP and external Python endpoints can be overridden for CI or containerized RisingWave deployments:
+
+```bash
+export JS_UDF_HTTP_BASE_URL=http://host.docker.internal:18080
+export PY_UDF_SERVER_URL=http://host.docker.internal:8815
+```
+
 Run it with:
 
 ```bash

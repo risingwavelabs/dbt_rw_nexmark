@@ -3,7 +3,7 @@ functions:
     description: Double the input price with an external Python UDF server.
     config:
       language: python
-      link: http://127.0.0.1:8815
+      link: "{{ env_var('PY_UDF_SERVER_URL', 'http://127.0.0.1:8815') }}"
     arguments:
       - name: price
         data_type: float8

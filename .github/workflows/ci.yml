@@ -17,10 +17,15 @@ jobs:
         ports:
           - 4566:4566
         options: >-
+          --add-host=host.docker.internal:host-gateway
           --health-cmd "pg_isready -h 127.0.0.1 -p 4566 -U root"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+    env:
+      JS_UDF_HTTP_BASE_URL: http://host.docker.internal:18080
+      PY_UDF_SERVER_URL: http://host.docker.internal:8815
 
     steps:
       - name: Checkout repository
@@ -35,6 +40,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install dbt-risingwave
+          pip install -r scripts/python_udf_server_requirements.txt
 
       - name: Create dbt profiles directory
         run: mkdir -p ~/.dbt
@@ -59,6 +65,13 @@ jobs:
         run: |
           timeout 60 bash -c 'until nc -z 127.0.0.1 4566; do sleep 1; done'
 
+      - name: Start UDF mock servers
+        run: |
+          python scripts/js_udf_http_server.py > /tmp/js_udf_http_server.log 2>&1 &
+          python scripts/python_udf_server.py > /tmp/python_udf_server.log 2>&1 &
+          timeout 30 bash -c 'until nc -z 127.0.0.1 18080; do sleep 1; done'
+          timeout 30 bash -c 'until nc -z 127.0.0.1 8815; do sleep 1; done'
+
       - name: Test dbt connection
         run: dbt debug
 
@@ -68,8 +81,8 @@ jobs:
       - name: Run dbt seed
         run: dbt seed
 
-      - name: Run all dbt models
-        run: dbt run
+      - name: Build all dbt resources
+        run: dbt build
 
       - name: Run dbt tests
         run: dbt test
@@ -82,7 +95,7 @@ jobs:
         run: dbt run --select tag:wide_table_example
 
       - name: Run zero downtime example
-        run: dbt run --select +tag:zero_downtime_example --vars 'zero_downtime: true'
+        run: "dbt run --select +tag:zero_downtime_example --vars 'zero_downtime: true'"
 
       - name: Run incremental models
         run: dbt run --select config.materialized:incremental

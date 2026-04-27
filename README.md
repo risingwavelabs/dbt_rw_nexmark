@@ -109,11 +109,15 @@ Start the local HTTP server used by the async JavaScript UDF examples:
 $ python3 scripts/js_udf_http_server.py
 ```
 
+The JavaScript HTTP examples use `JS_UDF_HTTP_BASE_URL`, defaulting to `http://127.0.0.1:18080`.
+
 Start the local external Python UDF server used by the Python function example:
 ```bash
 $ python3 -m pip install -r scripts/python_udf_server_requirements.txt
 $ python3 scripts/python_udf_server.py
 ```
+
+The external Python example uses `PY_UDF_SERVER_URL`, defaulting to `http://127.0.0.1:8815`.
 
 Run the scalar function examples and their tests:
 ```bash
