@@ -19,7 +19,9 @@ jobs:
           --add-host=host.docker.internal:host-gateway
 
     env:
+      JS_UDF_HTTP_BIND_HOST: 0.0.0.0
       JS_UDF_HTTP_BASE_URL: http://host.docker.internal:18080
+      PY_UDF_SERVER_BIND_HOST: 0.0.0.0
       PY_UDF_SERVER_URL: http://host.docker.internal:8815
 
     steps:

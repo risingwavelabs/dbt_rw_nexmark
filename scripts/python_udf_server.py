@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import os
+
 from arrow_udf import UdfServer, udf
 
 
@@ -8,9 +10,10 @@ def price_for_xlarge_py(price: float) -> float:
 
 
 def main() -> None:
-    server = UdfServer(location="127.0.0.1:8815")
+    bind_host = os.getenv("PY_UDF_SERVER_BIND_HOST", "127.0.0.1")
+    server = UdfServer(location=f"{bind_host}:8815")
     server.add_function(price_for_xlarge_py)
-    print("python udf server listening on 127.0.0.1:8815", flush=True)
+    print(f"python udf server listening on {bind_host}:8815", flush=True)
     server.serve()
 
 

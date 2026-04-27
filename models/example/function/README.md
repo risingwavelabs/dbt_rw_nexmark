@@ -25,7 +25,9 @@ The HTTP and external Python endpoints can be overridden for CI or containerized
 
 ```bash
 export JS_UDF_HTTP_BASE_URL=http://host.docker.internal:18080
+export JS_UDF_HTTP_BIND_HOST=0.0.0.0
 export PY_UDF_SERVER_URL=http://host.docker.internal:8815
+export PY_UDF_SERVER_BIND_HOST=0.0.0.0
 ```
 
 Run it with:

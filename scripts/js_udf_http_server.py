@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 
@@ -47,8 +48,9 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
-    server = ThreadingHTTPServer(("127.0.0.1", 18080), Handler)
-    print("listening on 127.0.0.1:18080", flush=True)
+    bind_host = os.getenv("JS_UDF_HTTP_BIND_HOST", "127.0.0.1")
+    server = ThreadingHTTPServer((bind_host, 18080), Handler)
+    print(f"listening on {bind_host}:18080", flush=True)
     server.serve_forever()
 
 

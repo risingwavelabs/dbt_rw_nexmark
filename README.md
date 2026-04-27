@@ -110,6 +110,7 @@ $ python3 scripts/js_udf_http_server.py
 ```
 
 The JavaScript HTTP examples use `JS_UDF_HTTP_BASE_URL`, defaulting to `http://127.0.0.1:18080`.
+Set `JS_UDF_HTTP_BIND_HOST=0.0.0.0` when RisingWave runs in a separate container and must reach this mock service through the host network.
 
 Start the local external Python UDF server used by the Python function example:
 ```bash
@@ -118,6 +119,7 @@ $ python3 scripts/python_udf_server.py
 ```
 
 The external Python example uses `PY_UDF_SERVER_URL`, defaulting to `http://127.0.0.1:8815`.
+Set `PY_UDF_SERVER_BIND_HOST=0.0.0.0` when RisingWave runs in a separate container and must reach this UDF server through the host network.
 
 Run the scalar function examples and their tests:
 ```bash
