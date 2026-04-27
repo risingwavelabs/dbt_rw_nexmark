@@ -18,10 +18,6 @@ jobs:
           - 4566:4566
         options: >-
           --add-host=host.docker.internal:host-gateway
-          --health-cmd "pg_isready -h 127.0.0.1 -p 4566 -U root"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     env:
       JS_UDF_HTTP_BASE_URL: http://host.docker.internal:18080
